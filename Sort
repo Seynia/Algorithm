@@ -1,0 +1,75 @@
+#include <iostream>
+#include <ctime>
+#include <vector>
+
+using namespace std;
+
+
+void arrOut(int* arr, int size) {
+	for (int i = 0; i < 9; i++) cout << arr[i] << " ";
+	cout << endl;
+}
+
+void swap(int* arr, int i, int j) {
+	int tmp = arr[i];
+	arr[i] = arr[j];
+	arr[j] = tmp;
+}
+
+void bubble(int* arr, int size) {
+	int i, j;
+	bool flag = false;
+	for (i = 1; i < size; i++) {
+		for (j = 1; j < size; j++) {
+			if (arr[j] < arr[j - 1]) {
+				flag = true;
+				swap(arr, j, j - 1);
+				arrOut(arr, size);
+			}
+		}
+		if (!flag) break;
+	}
+
+}
+
+void insertion(int* arr, int size) {
+	int i, j = 1, k, result[9];
+	for (i = 1; i < size; i++, j =1) {
+		while (arr[j] < arr[j - 1]) {
+			swap(arr, j, j - 1);
+			j--;
+		}
+		arrOut(arr, 9);
+	}
+}
+
+void quick(int* arr, int start, int end) {
+	int i = start + 1, j = end, tmp, pivot = start;
+	int flag = 0;
+	for (int u = start; u < end; u++) {
+		if (arr[u] < arr[u + 1]) flag++;
+	}
+	if (flag == end - start) {
+		return;
+	}
+	while (j > i) {
+		if (arr[i] > arr[j]) swap(arr, i, j);
+		i++;
+		j--;
+	}
+	swap(arr, pivot, j);
+	arrOut(arr, 9);
+	quick(arr, 0, j);
+	quick(arr, i, end);
+}
+
+int main() {
+	long start = clock();
+	int arr[]{50, 70, 60, 90, 40, 80, 10, 20, 30};
+	int size = sizeof(arr) / sizeof(int);
+	arrOut(arr, size);
+	//bubble(arr, size);
+	quick(arr, 0, size - 1);
+	//arrOut(arr, size);
+	cout << "time is elapsed " << clock() - start << " ms";
+}
